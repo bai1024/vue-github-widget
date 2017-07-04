@@ -1,5 +1,5 @@
 <template lang="pug">
-#app
+#app(v-if="data")
   .widget-user-info
     .user-info__basic
       img(:src="data.avatar_url")
@@ -18,17 +18,22 @@
           span {{ data.public_repos }}
           span  Repostories
   hr
-  .widget-repo-info
+  .widget-repo-info(v-if="repos")
     p Top repositories
     repos-item(
       v-for="item in repos.slice(0, 3)"
       :item="item"
     )
-  .widget-contact 
+  .widget-bottom 
+    .follow-btn 
+      a(href="www.baidu.com") Follow
+    .update-time Update: {{ data.updated_at | timeago }}
+
 </template>
 
 <script>
 import axios from 'axios'
+import timeago from "timeago.js"
 import ReposItem from "@/components/repos-item"
 
 const user = "dingdingbai"
@@ -52,6 +57,11 @@ export default {
           return b.stargazers_count - a.stargazers_count
         })
       })
+  },
+  filters:{
+    timeago(t){
+      return timeago().format(t)
+    }
   },
   components: {
     ReposItem
@@ -110,4 +120,16 @@ export default {
       display: block
       &:first-child
         color: #4078C0;
+        
+.widget-bottom
+  display: flex
+  align-items: center
+  justify-content: space-around
+
+.follow-btn
+  padding: 5px 30px
+  background: #ddd
+  > a
+    color: #4078c0;
+    text-decoration: none;
 </style>

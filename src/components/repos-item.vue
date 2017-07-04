@@ -28,9 +28,16 @@ export default {
   align-items: center
   div 
     margin-bottom: 35px
+    width: 33.3%
+    text-align: left
     
 .repo-item__name
   a
     color: #4078C0;
     text-decoration: none;
+.repo-item__language
+  padding-left: 55px
+  
+.repo-item__count
+  padding-left: 60px
 </style>
