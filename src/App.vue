@@ -1,20 +1,36 @@
 <template lang="pug">
-  #app
-    .widget-user-info
-      .user-info__basic
-        img(:src="data.avatar_url")
-        div
-          .basic__name {{ data.name }}
-          .basic__bio {{ data.bio }}
-          .basic__loaction {{ data.location }}
-      .user-info__stat
-    .widget-repo-info
-    .widget-contact
-  
+#app
+  .widget-user-info
+    .user-info__basic
+      img(:src="data.avatar_url")
+      div
+        .basic__name {{ data.name }}
+        .basic__bio {{ data.bio }}
+        .basic__loaction {{ data.location }}
+    .user-info__stat
+        .stat__follower 
+          span {{ data.followers }}
+          span Follower
+        .stat__following 
+          span {{ data.following }}
+          span Following
+        .stat__repos 
+          span {{ data.public_repos }}
+          span  Repostories
+  hr
+  .widget-repo-info
+    p Top repositories
+    repos-item(
+      v-for="item in repos.slice(0, 3)"
+      :item="item"
+    )
+  .widget-contact 
 </template>
 
 <script>
-  import axios from 'axios'
+import axios from 'axios'
+import ReposItem from "@/components/repos-item"
+
 const user = "dingdingbai"
 
 export default {
@@ -22,18 +38,28 @@ export default {
   data() {
     return {
       data:null,
+      repos:null
     }
   },
   created() {
     axios.get("https://api.github.com/users/" + user)
       .then(res=>{
         this.data = res.data
-        console.log(this.data)
+      }),
+    axios.get("https://api.github.com/users/"+ user + "/repos")
+      .then(res => {
+        this.repos = res.data.sort(function(a,b){
+          return b.stargazers_count - a.stargazers_count
+        })
       })
+  },
+  components: {
+    ReposItem
   }
 }
 </script>
 
+<style src='normalize.css'></style>
 <style lang="stylus">
 #app 
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -54,6 +80,34 @@ export default {
   display: flex
   align-items: center
   > img
+    flex: 2
+    padding: 10px
     width: 80px;
     border-radius: 50%;
+  > div
+    flex: 5
+    width: 270px;
+    text-align: center; 
+
+.basic__name
+  font-size: 25px;
+
+.basic__bio
+  color: #4078C0;
+  font-size: 14px;
+
+.basic__loaction
+  font-size: 14px
+
+.user-info__stat
+  display: flex
+  align-items: center
+  justify-content: space-around
+  font-size: 16px
+  font-weight: 600
+  div
+    span
+      display: block
+      &:first-child
+        color: #4078C0;
 </style>
