@@ -1,5 +1,5 @@
 <template lang="pug">
-#app(v-if="data")
+#app(v-if="data && repos")
   .widget-user-info
     .user-info__basic
       img(:src="data.avatar_url")
@@ -18,7 +18,7 @@
           span {{ data.public_repos }}
           span  Repostories
   hr
-  .widget-repo-info(v-if="repos")
+  .widget-repo-info
     p Top repositories
     repos-item(
       v-for="item in repos.slice(0, 3)"
@@ -26,7 +26,7 @@
     )
   .widget-bottom 
     .follow-btn 
-      a(href="www.baidu.com") Follow
+      a(href="https://github.com/" + user) Follow
     .update-time Update: {{ data.updated_at | timeago }}
 
 </template>
@@ -36,22 +36,23 @@ import axios from 'axios'
 import timeago from "timeago.js"
 import ReposItem from "@/components/repos-item"
 
-const user = "dingdingbai"
+// const user = "dingdingbai"
 
 export default {
   name: 'app',
   data() {
     return {
       data:null,
-      repos:null
+      repos:null,
+      user: "dingdingbai"
     }
   },
   created() {
-    axios.get("https://api.github.com/users/" + user)
+    axios.get("https://api.github.com/users/" + this.user)
       .then(res=>{
         this.data = res.data
       }),
-    axios.get("https://api.github.com/users/"+ user + "/repos")
+    axios.get("https://api.github.com/users/"+ this.user + "/repos")
       .then(res => {
         this.repos = res.data.sort(function(a,b){
           return b.stargazers_count - a.stargazers_count
@@ -93,18 +94,19 @@ export default {
     flex: 2
     padding: 10px
     width: 80px;
-    border-radius: 50%;
+    border-radius: 50%
   > div
     flex: 5
-    width: 270px;
-    text-align: center; 
+    width: 270px
+    text-align: center
 
 .basic__name
-  font-size: 25px;
+  font-size: 25px
 
 .basic__bio
-  color: #4078C0;
-  font-size: 14px;
+  color: #4078C0
+  font-size: 14px
+  margin: 10px 0
 
 .basic__loaction
   font-size: 14px
@@ -119,7 +121,11 @@ export default {
     span
       display: block
       &:first-child
-        color: #4078C0;
+        color: #4078C0
+        
+.widget-repo-info
+  p
+    font-weight: 600
         
 .widget-bottom
   display: flex
@@ -131,5 +137,5 @@ export default {
   background: #ddd
   > a
     color: #4078c0;
-    text-decoration: none;
+    text-decoration: none
 </style>

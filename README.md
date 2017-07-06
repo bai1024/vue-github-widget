@@ -1,21 +1,6 @@
-# vue-github-widget
+# Vue-Github-Widget
 
-> A Vue.js project
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+使用Vue和Github API制作的github-widget,[Online Demo]()
+<p align="center">
+    <img src="http://ww1.sinaimg.cn/large/9bd18299gy1fha7q883f6j20de0ivwfp" alt="image">
+</p>
